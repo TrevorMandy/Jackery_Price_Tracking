@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import sqlite3
 
+print("Running file...")
+
 url = "https://www.jackery.com/collections/all"
 response = requests.get(url)
 
@@ -51,7 +53,9 @@ df = pd.DataFrame(data)
 
 conn = sqlite3.connect('jackery_prices.db')
 
-df.to_sql('product_prices', conn, if_exists='replace', index=False)
+df.to_sql('product_prices', conn, if_exists='append', index=False)
 
 conn.commit()
 conn.close()
+
+print("\nProcess complete.")

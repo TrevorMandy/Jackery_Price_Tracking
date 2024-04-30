@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackery Prices Bar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Jackery Prices Bar Chart</h1>
+    <canvas id="priceChart"></canvas>
+
+    <script>
+        // Retrieve the JSON data passed from Flask
+        var jsonData = '{{ data|safe }}';
+
+        // Extract product names and regular prices from the JSON data
+        var productNames = jsonData.map(function(item) {
+            return item['Product Name'];
+        });
+        var regularPrices = jsonData.map(function(item) {
+            return item['Regular Price'];
+        });
+
+        // Configure the chart data
+        var chartData = {
+            labels: productNames,
+            datasets: [{
+                label: 'Regular Price',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: regularPrices
+            }]
+        };
+
+        // Configure the chart options
+        var chartOptions = {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        // Create the chart
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var priceChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: chartData,
+            options: chartOptions
+        });
+    </script>
+</body>
+</html>
